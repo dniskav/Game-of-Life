@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of life</title>
+
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="app">
+        <span>hold left click and move to draw</span>
+        <button onclick="game.start()">Start</button>
+        <button onclick="game.stop()">Stop</button>
+        <button onclick="game.random()">Random</button>
+        <button onclick="game.gen('plane')">Plane</button>
+        <button onclick="game.gen('planesGun')">Plane's gun</button>
+        <label>
+            Velocity: <span id="velocityTag"></span> 
+            <input type="range" min="0" max="200" step="20" id="steps" oninput="game.setFramesStep(this.value)" value="100"/>
+        </label>
+
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
