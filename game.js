@@ -16,6 +16,7 @@ class game {
         };
         this.dropCounter = 0;
         this.lastTime = 0;
+        this.startPaint = false;
 
         this.ctx.scale(this.resolution, this.resolution);
 
@@ -40,9 +41,16 @@ class game {
             [1, 1],
         ];
 
-        this.canvas.addEventListener('click', (event) => {
-            const { gridX, gridY } = this.getGridCoordinates(event);
-            this.toggleBoxState(gridX, gridY);
+        this.canvas.addEventListener('mousedown', (event) => {
+            this.startPaint = true;
+        });
+
+        this.canvas.addEventListener('mouseup', (event) => {
+            this.startPaint = false;
+        });
+
+        this.canvas.addEventListener('mousemove', (event) => {
+            if(this.startPaint) this.paint();
         });
 
         document.addEventListener("keydown", (ev) => {
@@ -61,6 +69,15 @@ class game {
         });
 
         return this;
+    }
+
+    clear() {
+        this.buildBoard();
+    }
+
+    paint() {
+        const { gridX, gridY } = this.getGridCoordinates(event);
+        this.toggleBoxState(gridX, gridY);
     }
 
     toggleBoxState(posX, posY) {
@@ -109,12 +126,13 @@ class game {
     };
 
     gen = (shape) => {
+        const pos = 40;
         const fig = shapes[shape];
         this.buildBoard();
         const shapeState = [];
 
         fig.forEach((row, ndx) => {
-            this.currentState[ndx].splice(0, row.length, ...row);
+            this.currentState[ndx + pos].splice(pos, row.length, ...row);
         });
     };
 

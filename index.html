@@ -9,20 +9,27 @@
 </head>
 <body>
     <div id="app">
-        <span>hold left click and move to draw</span>
-        <button onclick="game.start()">Start</button>
-        <button onclick="game.stop()">Stop</button>
-        <button onclick="game.random()">Random</button>
-        <button onclick="game.gen('plane')">Plane</button>
-        <button onclick="game.gen('planesGun')">Plane's gun</button>
         <label>
             Delay: <span id="velocityTag"></span>%
             <input type="range" min="0" max="100" step="1" id="steps" oninput="game.setFramesStep(this.value)" value="5"/>
         </label>
-        
-        <div id="debug"></div>
 
-        <canvas id="gameCanvas" class="board" width="500" height="500"></canvas>
+        <span>hold left click and move to draw - hold Alt to erase</span>
+
+        <div class="left">
+            <button onclick="game.start()">Start</button>
+            <button onclick="game.stop()">Stop</button>
+            <button onclick="game.random()">Random</button>
+            <button onclick="game.clear()">clear</button>
+            <button onclick="game.gen('plane')">Plane</button>
+            <button onclick="game.gen('pulsar')">Pulsar</button>
+            <button onclick="game.gen('rPentomino')">rPentomino</button>
+            <button onclick="game.gen('planesGun')">Plane's gun</button>
+        </div>
+        
+        <div class="right">
+            <canvas id="gameCanvas" class="board" width="500" height="500"></canvas>
+        </div>
 
     </div>
     <script type="module" src="app.js"></script>
