@@ -4,12 +4,12 @@ const dbg = document.getElementById('debug');
 
 class game {
     constructor(nxC, nyC) {
-        const canvas = document.getElementById("gameCanvas");
-        this.ctx = canvas.getContext("2d");
+        this.canvas = document.getElementById("gameCanvas");
+        this.ctx = this.canvas.getContext("2d");
 
-        const resolution = 5;
-        const cols = canvas.width / resolution;
-        const rows = canvas.height / resolution;
+        this.resolution = 5;
+        const cols = this.canvas.width / this.resolution;
+        const rows = this.canvas.height / this.resolution;
         this.colors = {
             live: 'yellow',
             death: 'black'
@@ -17,7 +17,7 @@ class game {
         this.dropCounter = 0;
         this.lastTime = 0;
 
-        this.ctx.scale(resolution, resolution);
+        this.ctx.scale(this.resolution, this.resolution);
 
         this.nxC = nxC;
         this.nyC = nyC;
@@ -42,10 +42,10 @@ class game {
             [1, 1],
         ];
 
-        canvas.addEventListener('click', (event) => {
-            const { gridX, gridY } = getGridCoordinates(event);
+        this.canvas.addEventListener('click', (event) => {
+            const { gridX, gridY } = this.getGridCoordinates(event);
             console.log(`Clic en la celda: (${gridX}, ${gridY})`);
-            // toggleBoxState(gridX, gridY);
+            // this.toggleBoxState(gridX, gridY);
         });
 
         document.addEventListener("keydown", (ev) => {
@@ -58,10 +58,6 @@ class game {
             this.setErase(false);
         });
 
-        function toggleBoxState(posX, posY) {
-            this.currentState[posX][posY] = this.erasing ? 0 : 1;
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const board = this.buildBoard();
         });
@@ -69,16 +65,21 @@ class game {
         return this;
     }
 
+    toggleBoxState(posX, posY) {
+        this.currentState[posX][posY] = this.erasing ? 0 : 1;
+    }
+
+
     getGridCoordinates = (event) => {
-        const rect = canvas.getBoundingClientRect();
+        const rect = this.canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
         const unscaledX = x / 5;
         const unscaledY = y / 5;
 
-        const gridX = Math.floor(unscaledX / resolution);
-        const gridY = Math.floor(unscaledY / resolution);
+        const gridX = Math.floor(unscaledX / this.resolution);
+        const gridY = Math.floor(unscaledY / this.resolution);
 
         return { gridX, gridY };
     }
