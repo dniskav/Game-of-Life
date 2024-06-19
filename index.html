@@ -16,9 +16,13 @@
         <button onclick="game.gen('plane')">Plane</button>
         <button onclick="game.gen('planesGun')">Plane's gun</button>
         <label>
-            Velocity: <span id="velocityTag"></span> 
-            <input type="range" min="0" max="200" step="20" id="steps" oninput="game.setFramesStep(this.value)" value="100"/>
+            Delay: <span id="velocityTag"></span>%
+            <input type="range" min="0" max="100" step="1" id="steps" oninput="game.setFramesStep(this.value)" value="5"/>
         </label>
+        
+        <div id="debug"></div>
+
+        <canvas id="gameCanvas" class="board" width="500" height="500"></canvas>
 
     </div>
     <script type="module" src="app.js"></script>
