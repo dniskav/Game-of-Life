@@ -27,8 +27,6 @@ class game {
         this.currentState = [];
         this.nextState = [];
         this.timeout = null;
-        const dimSW = 500;
-        const dimSH = 500;
         const velocityTag = document.getElementById("velocityTag");
         velocityTag.innerText = this.framesSteps;
         this.operations = [
@@ -44,8 +42,7 @@ class game {
 
         this.canvas.addEventListener('click', (event) => {
             const { gridX, gridY } = this.getGridCoordinates(event);
-            console.log(`Clic en la celda: (${gridX}, ${gridY})`);
-            // this.toggleBoxState(gridX, gridY);
+            this.toggleBoxState(gridX, gridY);
         });
 
         document.addEventListener("keydown", (ev) => {
@@ -60,26 +57,26 @@ class game {
 
         document.addEventListener('DOMContentLoaded', () => {
             const board = this.buildBoard();
+            this.frameSet();
         });
 
         return this;
     }
 
     toggleBoxState(posX, posY) {
-        this.currentState[posX][posY] = this.erasing ? 0 : 1;
+        this.currentState[posY][posX] = this.erasing ? 0 : 1;
     }
-
 
     getGridCoordinates = (event) => {
         const rect = this.canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        const unscaledX = x / 5;
-        const unscaledY = y / 5;
+        const unscaledX = x / this.resolution;
+        const unscaledY = y / this.resolution;
 
-        const gridX = Math.floor(unscaledX / this.resolution);
-        const gridY = Math.floor(unscaledY / this.resolution);
+        const gridX = Math.floor(unscaledX);
+        const gridY = Math.floor(unscaledY);
 
         return { gridX, gridY };
     }
@@ -151,14 +148,16 @@ class game {
                 return acum + this.currentState[newY][newX];
             }, 0);
 
-            //a dead cell with 3 neighbors goto live
-            if (!status && neighbors === 3) {
-                willBealive = 1;
-
-                //a alive cell with less than 2 or more than 3 go to die
-            } else if ((status && neighbors < 2) || neighbors > 3) {
-                willBealive = 0;
-            }
+            if(this.running) {
+                //a dead cell with 3 neighbors goto live
+                if (!status && neighbors === 3) {
+                    willBealive = 1;
+                    
+                    //a alive cell with less than 2 or more than 3 go to die
+                } else if ((status && neighbors < 2) || neighbors > 3) {
+                    willBealive = 0;
+                }
+            } 
 
             return willBealive;
         })
@@ -168,9 +167,6 @@ class game {
     };
 
     frameSet = (time = 0) => {
-        if (!this.running) {
-            return;
-        }
         const deltatime = time - this.lastTime;
         this.lastTime = time;
         this.dropCounter += deltatime;
@@ -191,7 +187,6 @@ class game {
 
     stop = () => {
         this.running = false;
-        cancelAnimationFrame(this.timeout);
     };
 }
 
