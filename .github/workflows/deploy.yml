@@ -1,0 +1,22 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # El branch donde se publica el sitio
+          folder: ./ # Cambia esto si tus archivos están en otra carpeta
+          clean: true # Elimina archivos antiguos antes de subir nuevos
+          token: ${{ secrets.GITHUB_TOKEN }}
